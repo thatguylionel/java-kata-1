@@ -67,7 +67,7 @@ public class LibraryUtils {
         Book newBook = new Book(title, isbn, author, description);
         books.add(newBook);
 
-        try (FileWriter writer = new FileWriter("src/main/resources/org/echocat/kata/java/part1/books.csv", true)) {
+        try (FileWriter writer = new FileWriter("src/main/resources/books.csv", true)) {
             writer.write(String.format("%s;%s;%s;%s\n", title, author, isbn, description));
             System.out.println("Book added and saved to CSV file successfully.");
         } catch (IOException e) {
