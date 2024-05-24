@@ -8,9 +8,10 @@
     <groupId>org.echocat.kata</groupId>
     <artifactId>java-kata-1</artifactId>
     <version>1-SNAPSHOT</version>
+    <packaging>jar</packaging>
 
     <properties>
-        <java.version>14</java.version>
+        <java.version>17</java.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
