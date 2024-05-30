@@ -1,16 +1,18 @@
 package org.echocat.kata.java.part1.model;
 
-public class Book {
-    private String title;
-    private String isbn;
-    private String authors;
-    private String description;
-
-    public Book(String title, String isbn, String authors, String description) {
-        this.title = title;
-        this.isbn = isbn;
-        this.authors = authors;
-        this.description = description;
+public record Book(String title, String isbn, String authors, String description) {
+    /**
+     * Constructs a Book with specified title, ISBN, authors, and description.
+     *
+     * @param title       The title of the book, must not be null or empty.
+     * @param isbn        The ISBN of the book, must not be null or empty.
+     * @param authors     The authors of the book, stored as a string.
+     * @param description A description of the book, can be null.
+     */
+    public Book {
+        if (title == null || title.isEmpty() || isbn == null || isbn.isEmpty()) {
+            throw new IllegalArgumentException("Title and ISBN must not be null or empty.");
+        }
     }
 
     @Override
@@ -23,35 +25,16 @@ public class Book {
                 '}';
     }
 
-    public String getTitle() {
-        return title;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Book book = (Book) o;
+        return isbn.equals(book.isbn);
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getIsbn() {
-        return isbn;
-    }
-
-    public void setIsbn(String isbn) {
-        this.isbn = isbn;
-    }
-
-    public String getAuthors() {
-        return authors;
-    }
-
-    public void setAuthors(String authors) {
-        this.authors = authors;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
+    @Override
+    public int hashCode() {
+        return isbn.hashCode();
     }
 }
