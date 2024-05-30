@@ -34,7 +34,7 @@ public interface PrintedMediaService {
         public void findBookOrMagazineByIsbn(Scanner scanner, List<Book> books, List<Magazine> magazines) {
             System.out.print("Enter ISBN: ");
             String isbn = scanner.nextLine();
-            Object bookOrMagazineByIsbn = findBookOrMagazineByIsbn(isbn, books, magazines);
+            Object bookOrMagazineByIsbn = retrieveItemByIsbn(isbn, books, magazines);
             if (bookOrMagazineByIsbn == null) {
                 System.out.println("No book or magazine found with ISBN " + isbn);
             } else if (bookOrMagazineByIsbn instanceof Book) {
@@ -44,7 +44,16 @@ public interface PrintedMediaService {
             }
         }
 
-        private static <T> T findBookOrMagazineByIsbn(String isbn, List<Book> books, List<Magazine> magazines) {
+        /**
+         * Retrieves a book or magazine from the provided lists that matches the given ISBN.
+         * This method checks each book and magazine for a match and returns the first match found.
+         *
+         * @param isbn      the ISBN to search for
+         * @param books     the list of books to search
+         * @param magazines the list of magazines to search
+         * @return the book or magazine that matches the ISBN; returns null if no match is found
+         */
+        private static <T> T retrieveItemByIsbn(String isbn, List<Book> books, List<Magazine> magazines) {
             for (Book book : books) {
                 if (book.isbn().equals(isbn)) {
                     return (T) book;
