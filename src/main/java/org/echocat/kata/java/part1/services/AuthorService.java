@@ -13,16 +13,6 @@ import java.util.Scanner;
  */
 public interface AuthorService {
     /**
-     * Retrieves titles of all books and magazines authored by the given email.
-     *
-     * @param email
-     * @param books
-     * @param magazines
-     * @return
-     */
-    List<String> findBooksAndMagazinesByAuthorEmail(String email, List<Book> books, List<Magazine> magazines);
-
-    /**
      * Prompts the user to enter an author's email and prints the titles of all books
      * and magazines authored by that email.
      *
@@ -30,12 +20,29 @@ public interface AuthorService {
      * @param books
      * @param magazines
      */
-    void findBooksAndMagazinesByAuthorEmail(Scanner scanner, List<Book> books, List<Magazine> magazines);
+    void promptAndFindBooksAndMagazinesByAuthorEmail(Scanner scanner, List<Book> books, List<Magazine> magazines);
 
     class AuthorServiceImpl implements AuthorService {
+        public void promptAndFindBooksAndMagazinesByAuthorEmail(Scanner scanner, List<Book> books, List<Magazine> magazines) {
+            System.out.print("Enter Author's Email: ");
+            String email = scanner.nextLine();
+            List<String> items = fetchTitlesByAuthorEmail(email, books, magazines);
+            if (items.isEmpty()) {
+                System.out.println("No books or magazines found by author's email " + email);
+            } else {
+                items.forEach(System.out::println);
+            }
+        }
 
-        @Override
-        public List<String> findBooksAndMagazinesByAuthorEmail(String email, List<Book> books, List<Magazine> magazines) {
+        /**
+         * Finds all books and magazines authored by the given email.
+         *
+         * @param email     The email of the author to search for.
+         * @param books     The list of books to search in.
+         * @param magazines The list of magazines to search in.
+         * @return A list of titles of books and magazines authored by the given email.
+         */
+        private List<String> fetchTitlesByAuthorEmail(String email, List<Book> books, List<Magazine> magazines) {
             List<String> items = new ArrayList<>();
             for (Book book : books) {
                 if (book.authors().contains(email)) {
@@ -49,18 +56,5 @@ public interface AuthorService {
             }
             return items;
         }
-
-        @Override
-        public void findBooksAndMagazinesByAuthorEmail(Scanner scanner, List<Book> books, List<Magazine> magazines) {
-            System.out.print("Enter Author's Email: ");
-            String email = scanner.nextLine();
-            List<String> items = findBooksAndMagazinesByAuthorEmail(email, books, magazines);
-            if (items.isEmpty()) {
-                System.out.println("No books or magazines found by author's email " + email);
-            } else {
-                items.forEach(System.out::println);
-            }
-        }
-
     }
 }

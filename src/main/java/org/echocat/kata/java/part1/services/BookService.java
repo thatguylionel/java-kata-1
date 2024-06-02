@@ -6,6 +6,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Interface defining the operations related to managing books within a library system.
@@ -22,25 +24,51 @@ public interface BookService {
     void addNewBook(Scanner scanner, List<Book> books);
 
     class BookServiceImpl implements BookService {
+        private static final Logger LOGGER = Logger.getLogger(BookServiceImpl.class.getName());
+        private static final String BOOKS_FILE_PATH = "src/main/resources/books.csv";
+
         @Override
         public void addNewBook(Scanner scanner, List<Book> books) {
-            System.out.print("Enter title: ");
-            String title = scanner.nextLine();
-            System.out.print("Enter author: ");
-            String author = scanner.nextLine();
-            System.out.print("Enter ISBN: ");
-            String isbn = scanner.nextLine();
-            System.out.print("Enter Description: ");
-            String description = scanner.nextLine();
+            try {
+                String title = promptUserForInput(scanner, "Enter title: ");
+                String author = promptUserForInput(scanner, "Enter author: ");
+                String isbn = promptUserForInput(scanner, "Enter ISBN: ");
+                String description = promptUserForInput(scanner, "Enter Description: ");
 
-            Book newBook = new Book(title, isbn, author, description);
-            books.add(newBook);
+                Book newBook = new Book(title, isbn, author, description);
+                books.add(newBook);
 
-            try (FileWriter writer = new FileWriter("src/main/resources/books.csv", true)) {
-                writer.write(String.format("%s;%s;%s;%s\n", title, author, isbn, description));
-                System.out.println("Book added and saved to CSV file successfully.");
+                saveBookToFile(newBook);
+                LOGGER.log(Level.INFO, "Book added and saved to CSV file successfully.");
+
             } catch (IOException e) {
-                System.err.println("Error writing to books CSV file: " + e.getMessage());
+                LOGGER.log(Level.SEVERE, "Error writing to books CSV file", e);
+            } catch (Exception e) {
+                LOGGER.log(Level.SEVERE, "An error occurred while adding a new book", e);
+            }
+        }
+
+        /**
+         * Prompts the user to enter input with the provided prompt message.
+         *
+         * @param scanner
+         * @param prompt
+         * @return the user input
+         */
+        private String promptUserForInput(Scanner scanner, String prompt) {
+            System.out.print(prompt);
+            return scanner.nextLine().trim();
+        }
+
+        /**
+         * Saves the book details to the CSV file.
+         *
+         * @param book
+         * @throws IOException
+         */
+        private void saveBookToFile(Book book) throws IOException {
+            try (FileWriter writer = new FileWriter(BOOKS_FILE_PATH, true)) {
+                writer.write(String.format("%s;%s;%s;%s\n", book.title(), book.authors(), book.isbn(), book.description()));
             }
         }
     }

@@ -35,12 +35,12 @@ public interface PrintedMediaService {
             System.out.print("Enter ISBN: ");
             String isbn = scanner.nextLine();
             Object bookOrMagazineByIsbn = retrieveItemByIsbn(isbn, books, magazines);
-            if (bookOrMagazineByIsbn == null) {
-                System.out.println("No book or magazine found with ISBN " + isbn);
-            } else if (bookOrMagazineByIsbn instanceof Book) {
-                System.out.println("Book: " + bookOrMagazineByIsbn);
-            } else if (bookOrMagazineByIsbn instanceof Magazine) {
-                System.out.println("Magazine: " + bookOrMagazineByIsbn);
+            switch (bookOrMagazineByIsbn) {
+                case null -> System.out.println("No book or magazine found with ISBN " + isbn);
+                case Book book -> System.out.println("Book: " + bookOrMagazineByIsbn);
+                case Magazine magazine -> System.out.println("Magazine: " + bookOrMagazineByIsbn);
+                default -> {
+                }
             }
         }
 

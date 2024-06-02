@@ -22,12 +22,6 @@ public class MainAppUnitTest {
         magazines = CsvReader.readFromCsvFile("magazines.csv", parts -> new Magazine(parts[0], parts[1], parts[2], parts[3]), ";");
     }
 
-    @Test
-    public void testFindBooksAndMagazinesByAuthorEmail() {
-        String email = "null-walter@echocat.org";
-        List<String> booksAndMagazinesByAuthorEmail = authorService.findBooksAndMagazinesByAuthorEmail(email, books, magazines);
-        Assert.assertTrue("Genial italienisch", booksAndMagazinesByAuthorEmail.stream().anyMatch(item -> item.contains("Genial italienisch")));
-    }
 
 
 }

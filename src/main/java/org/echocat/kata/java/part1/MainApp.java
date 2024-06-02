@@ -17,6 +17,12 @@ public class MainApp {
     private static final AuthorService authorService = new AuthorService.AuthorServiceImpl();
     private static final BookService bookService = new BookService.BookServiceImpl();
 
+    /**
+     * Main method to start the library management system.
+     * It reads the data from CSV files, initializes the console interface, and starts the application.
+     *
+     * @param args Command line arguments, which are not used in this application.
+     */
     public static void main(String[] args) {
         List<Book> books = readFromCsvFile("books.csv", parts -> new Book(parts[0], parts[1], parts[2], parts[3]), ";");
         List<Magazine> magazines = readFromCsvFile("magazines.csv", parts -> new Magazine(parts[0], parts[1], parts[2], parts[3]), ";");
@@ -49,7 +55,7 @@ public class MainApp {
                         printedMediaService.findBookOrMagazineByIsbn(scanner, books, magazines);
                         break;
                     case 3:
-                        authorService.findBooksAndMagazinesByAuthorEmail(scanner, books, magazines);
+                        authorService.promptAndFindBooksAndMagazinesByAuthorEmail(scanner, books, magazines);
                         break;
                     case 4:
                         bookService.addNewBook(scanner, books);
